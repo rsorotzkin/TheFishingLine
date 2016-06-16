@@ -23,8 +23,9 @@
             <ImageView
                 android:id="@+id/productImageView"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="match_parent"
                 android:adjustViewBounds="true"
+                android:layout_margin="8dp"
                 android:src="@drawable/salmon_slice"
                 android:scaleType="centerCrop" />
 
