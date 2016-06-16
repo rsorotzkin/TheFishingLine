@@ -8,15 +8,40 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.net.ssl.SSLSocketFactory;
+import javax.security.cert.CertificateException;
+import javax.security.cert.X509Certificate;
 
 public class ProductsFragment extends Fragment {
 
     private List<Products> productsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ProductsAdapter mAdapter;
+    DatabaseOperations databaseOperations;
+    TextView errorTextView;
+
+
+    // Declare variables
+    Items[] itemsData;
+    ArrayList<Items> itemsList;
 
     // Declare activities
     MainActivity mainActivity;
@@ -38,13 +63,14 @@ public class ProductsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_products, container, false);
-
+        databaseOperations = new DatabaseOperations();
 
 
 
 
         // Initialize the views for this fragment
         initializeViews(rootView);
+        registerListeners();
 
         // set up recyclerView
         setupRecyclerView();
@@ -61,6 +87,7 @@ public class ProductsFragment extends Fragment {
 
         // initialize and reference RecyclerView
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        errorTextView = (TextView)rootView.findViewById(R.id.errorTextView);
 
     }
 
@@ -70,8 +97,7 @@ public class ProductsFragment extends Fragment {
     public void setupRecyclerView() {
 
 
-
-        mAdapter = new ProductsAdapter(productsList);
+        mAdapter = new ProductsAdapter(getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager
                 (getActivity().getBaseContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -81,37 +107,70 @@ public class ProductsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        prepareMovieData();
+        downloadData();
     }
 
 
-    private void prepareMovieData() {
-        Products products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-       products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-        products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-        products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-        products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-        products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-        products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-        products = new Products("Salmon Slice", "1' with no skin", "$7.99", "In Stock");
-        productsList.add(products);
-
-        mAdapter.notifyDataSetChanged();
+    /**
+     * Function to register listeners
+     */
+    public void registerListeners() {
+        // set onClickListeners
+        errorTextView.setOnClickListener(errorTextViewListener);
+        //recyclerView.addOnItemTouchListener(recyclerViewOnItemTouchListener);
     }
+
+    /**
+     * OnClickListener for errorTextView
+     */
+    View.OnClickListener errorTextViewListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            errorTextView.setText("");
+            // download data from url
+            downloadData();
+        }
+    };
+
+
+
+    /**
+     * Function to download data from url
+     */
+    public void downloadData() {
+        // set url data to corresponding language of phone settings
+
+        // call makeJsonArrayRequest and send url, tag, errorTextView and instantiate a callBack
+        databaseOperations.makeJsonArrayRequest("https://108.58.133.90/var/www/html/test2.php", "json_items_request", errorTextView,
+                new DatabaseOperations.VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(String result) {
+                        // initialize gson object
+                        Toast.makeText(mainActivity.getApplicationContext(),"success",Toast.LENGTH_LONG).show();
+//                        Gson gson = new Gson();
+//                        try {
+//                            // convert json array into array of class type
+//                            itemsData = gson.fromJson(result, Items[].class);
+//                            // convert array to arrayList
+//                            itemsList = new ArrayList<>(Arrays.asList(itemsData));
+//                            // set list to adapter
+//                            mAdapter.setServicesList(itemsList);
+//
+//                        } catch (JsonSyntaxException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                });
+    }
+
+
+
+
+
+
+
+
     /**
      * Function to set fragment to this main activity
      *

@@ -5,4 +5,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- Volley error messages -->
+    <string name="error_no_connection_found">"No connection found. Click here to download again."
+    </string>
+    <string name="error_authentication_failed">"Authentication Failed. Click here to download
+        again."</string>
+    <string name="error_server_error">"A server error occurred. Click here to download again."
+    </string>
+    <string name="error_network_error">"A network error occurred. Click here to download again."
+    </string>
+    <string name="error_parsing_error">"Unable to parse data. Click here to download again."
+    </string>
+
 </resources>
