@@ -11,6 +11,7 @@ import java.util.List;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyViewHolder> {
 
     private List<Products> productsList;
+    private List<Items> itemsList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, details, inStock, price;
@@ -25,8 +26,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
     }
 
 
-    public ProductsAdapter(List<Products> productsList) {
-        this.productsList = productsList;
+    public ProductsAdapter(List<Items> itemsList) {
+        this.itemsList = itemsList;
     }
 
     @Override
@@ -39,15 +40,15 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Products products = productsList.get(position);
-        holder.title.setText(products.getTitle().toUpperCase());
-        holder.details.setText(products.getDescription());
-        holder.price.setText(products.getPrice());
-        holder.inStock.setText(products.getInStock());
+        Items items = itemsList.get(position);
+        holder.title.setText(items.getItem().toUpperCase());
+        //holder.details.setText(products.getDescription());
+        holder.price.setText(items.getItemPrice());
+        holder.inStock.setText("Available");
     }
 
     @Override
     public int getItemCount() {
-        return productsList.size();
+        return itemsList.size();
     }
 }
