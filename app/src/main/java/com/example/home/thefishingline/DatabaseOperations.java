@@ -59,7 +59,7 @@ public class DatabaseOperations {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // handle error exceptions
-                handleVolleyError(error, errorTextView);
+               handleVolleyError(error, errorTextView);
                 //pDialog.hide();
             }
         });
@@ -71,7 +71,6 @@ public class DatabaseOperations {
         void onSuccessResponse(final String result);
 
     }
-
 
     public static ProgressDialog createProgressDialog(Context mContext) {
         ProgressDialog dialog = new ProgressDialog(mContext);
@@ -109,7 +108,7 @@ public class DatabaseOperations {
         }
     }
 
-
-
 }
+
+
 

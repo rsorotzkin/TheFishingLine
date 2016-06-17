@@ -14,21 +14,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.net.ssl.SSLSocketFactory;
-import javax.security.cert.CertificateException;
-import javax.security.cert.X509Certificate;
 
 public class ProductsFragment extends Fragment {
 
@@ -142,24 +131,24 @@ public class ProductsFragment extends Fragment {
         // set url data to corresponding language of phone settings
 
         // call makeJsonArrayRequest and send url, tag, errorTextView and instantiate a callBack
-        databaseOperations.makeJsonArrayRequest("https://108.58.133.90/var/www/html/test2.php", "json_items_request", errorTextView,
+        databaseOperations.makeJsonArrayRequest("https://fishingline.mnl-consulting.com/var/www/html/test2.php", "json_items_request", errorTextView,
                 new DatabaseOperations.VolleyCallback() {
                     @Override
                     public void onSuccessResponse(String result) {
                         // initialize gson object
-                        Toast.makeText(mainActivity.getApplicationContext(),"success",Toast.LENGTH_LONG).show();
-//                        Gson gson = new Gson();
-//                        try {
-//                            // convert json array into array of class type
-//                            itemsData = gson.fromJson(result, Items[].class);
-//                            // convert array to arrayList
-//                            itemsList = new ArrayList<>(Arrays.asList(itemsData));
-//                            // set list to adapter
-//                            mAdapter.setServicesList(itemsList);
-//
-//                        } catch (JsonSyntaxException e) {
-//                            e.printStackTrace();
-//                        }
+                        //Toast.makeText(mainActivity.getApplicationContext(),"success",Toast.LENGTH_LONG).show();
+                       Gson gson = new Gson();
+                        try {
+                            // convert json array into array of class type
+                            itemsData = gson.fromJson(result, Items[].class);
+                            // convert array to arrayList
+                           itemsList = new ArrayList<>(Arrays.asList(itemsData));
+                            // set list to adapter
+                            mAdapter.setServicesList(itemsList);
+
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
