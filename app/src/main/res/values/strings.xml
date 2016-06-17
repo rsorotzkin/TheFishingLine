@@ -17,5 +17,6 @@
     </string>
     <string name="error_parsing_error">"Unable to parse data. Click here to download again."
     </string>
+    <string name="image_description">image description</string>
 
 </resources>

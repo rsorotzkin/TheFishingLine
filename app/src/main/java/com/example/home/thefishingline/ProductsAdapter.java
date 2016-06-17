@@ -61,7 +61,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         if (price.endsWith("00")) {
             price = price.substring(0, price.length() - 2);
         }
-        holder.price.setText(price);
+        holder.price.setText(price + " per lb.");
         holder.inStock.setText("Available");
     }
 

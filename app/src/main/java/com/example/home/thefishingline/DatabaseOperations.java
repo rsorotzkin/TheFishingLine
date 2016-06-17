@@ -32,10 +32,10 @@ public class DatabaseOperations {
      */
     public void makeJsonArrayRequest(String urlJsonArry, final String TAG,
                                      final TextView errorTextView, final VolleyCallback callback) {
-//        if (pDialog == null) {
-//            pDialog = createProgressDialog(mainActivity.getApplicationContext());
-//        }
-//        pDialog.show();
+        if (pDialog == null) {
+            pDialog = createProgressDialog(Util.getActivity());
+        }
+        pDialog.show();
 
         JsonArrayRequest req = new JsonArrayRequest(urlJsonArry,
                 new Response.Listener<JSONArray>() {
@@ -43,7 +43,7 @@ public class DatabaseOperations {
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
                         // hide progress dialog
-                        //pDialog.hide();
+                        pDialog.hide();
                         // initialize string to store json result
                         String jsonOutput = response.toString();
                         try {
@@ -60,7 +60,7 @@ public class DatabaseOperations {
             public void onErrorResponse(VolleyError error) {
                 // handle error exceptions
                handleVolleyError(error, errorTextView);
-                //pDialog.hide();
+                pDialog.hide();
             }
         });
         //requestQueue.add(req);

@@ -55,7 +55,7 @@
             android:id="@+id/produtctDetailsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="item description goes here"
+            android:text="Item description goes here"
             android:layout_gravity="start"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/colorSecondaryText" />
