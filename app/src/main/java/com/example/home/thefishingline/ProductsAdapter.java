@@ -57,7 +57,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         Items items = itemsList.get(position);
         holder.title.setText(items.getItem().toUpperCase());
         //holder.details.setText(products.getDescription());
-        holder.price.setText(items.getItemPrice());
+        String price = "$" + items.getItemPrice();
+        if (price.endsWith("00")) {
+            price = price.substring(0, price.length() - 2);
+        }
+        holder.price.setText(price);
         holder.inStock.setText("Available");
     }
 
