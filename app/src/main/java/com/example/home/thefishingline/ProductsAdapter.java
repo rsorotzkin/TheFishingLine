@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, details, inStock, price;
+        public LinearLayout itemLayout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -27,6 +29,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
             details = (TextView) view.findViewById(R.id.produtctDetailsTextView);
             price = (TextView) view.findViewById(R.id.productPriceTextView);
             inStock = (TextView) view.findViewById(R.id.productInStockTextView);
+            itemLayout = (LinearLayout) view.findViewById(R.id.itemLayout);
         }
     }
 
@@ -63,6 +66,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         }
         holder.price.setText(price + " per lb.");
         holder.inStock.setText("Available");
+
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.replaceFragment(new ProductDetailFragment(), R.string.image_description);
+            }
+        });
     }
 
 

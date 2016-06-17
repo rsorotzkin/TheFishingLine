@@ -3,6 +3,10 @@ package com.example.home.thefishingline;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
 
 /**
  * Created by Home on 6/7/2016.
@@ -74,6 +78,26 @@ public class Util extends Activity{
         getActivity().getFragmentManager().beginTransaction().replace(R.id.container,
                 fragment, tag + "").addToBackStack(tag + "").commit();
 
+    }
+
+    /**
+     * @param toolbar - set the icon to this toolbar
+     * @param drawer - navigation drawer
+     */
+    public static void enableBackButton(Toolbar toolbar, DrawerLayout drawer) {
+
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+// pop the backStack
+                activity.getFragmentManager().popBackStack();
+            }
+        });
+
+// set drawerLockMode to LOCK_MODE_LOCKED_CLOSED
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
 

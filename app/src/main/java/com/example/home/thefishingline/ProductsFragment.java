@@ -2,6 +2,9 @@ package com.example.home.thefishingline;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +38,8 @@ public class ProductsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Products");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("The Fishing Line");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
     }
 
@@ -60,6 +64,17 @@ public class ProductsFragment extends Fragment {
 
         // set up recyclerView
         setupRecyclerView();
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Action to call the Fishing Line", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+
+            }
+        });
 
 
 

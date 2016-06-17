@@ -2,6 +2,7 @@ package com.example.home.thefishingline;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +30,14 @@ public class CheckoutFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Products");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Checkout");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        MainActivity.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.getActivity().getFragmentManager().popBackStack();
+            }
+        });
 
     }
 
