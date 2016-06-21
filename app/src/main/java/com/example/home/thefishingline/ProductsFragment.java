@@ -11,7 +11,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
@@ -26,11 +29,13 @@ public class ProductsFragment extends Fragment {
     private ProductsAdapter mAdapter;
     DatabaseOperations databaseOperations;
     TextView errorTextView;
+    SearchView searchView;
 
 
     // Declare variables
     Items[] itemsData;
     ArrayList<Items> itemsList;
+    private ArrayList<Items> itemsCopy;
 
     // Declare activities
     MainActivity mainActivity;
@@ -65,17 +70,55 @@ public class ProductsFragment extends Fragment {
         // set up recyclerView
         setupRecyclerView();
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Action to call the Fishing Line", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Action to call the Fishing Line", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                // instantiating itemsCopy arraylist
+                itemsCopy = new ArrayList<>();
+                searchView.setVisibility(View.VISIBLE);
+                searchView.setIconifiedByDefault(true);
+                searchView.setFocusable(true);
+                searchView.setIconified(false);
+                searchView.requestFocusFromTouch();
+                fab.hide();
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        //Toast.makeText(Util.getActivity(), query + "", Toast.LENGTH_LONG).show();
+                        filter(query);
+                        Util.hideSoftKeyboard();
+                        return true;
+                    }
 
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        filter(newText);
+                        //Toast.makeText(Util.getActivity(), newText + "", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                });
 
             }
         });
 
+
+
+
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+
+                searchView.setVisibility(View.GONE);
+                mAdapter.setServicesList(itemsList);
+                mAdapter.notifyDataSetChanged();
+                fab.show();
+                return false;
+            }
+        });
 
 
         return rootView;
@@ -89,6 +132,8 @@ public class ProductsFragment extends Fragment {
         // initialize and reference RecyclerView
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         errorTextView = (TextView)rootView.findViewById(R.id.errorTextView);
+        searchView = (SearchView)rootView.findViewById(R.id.searchView);
+
 
     }
 
@@ -109,8 +154,23 @@ public class ProductsFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         downloadData();
+        //addItems();
     }
 
+    public void addItems(){
+        itemsList = new ArrayList<>();
+        Items items = new Items("sliced salmon","3.99");
+        itemsList.add(items);
+
+        items = new Items("whole salmon","5.99");
+        itemsList.add(items);
+
+        items = new Items("gefilta fish","3.99");
+        itemsList.add(items);
+
+        mAdapter.setServicesList(itemsList);
+
+    }
 
     /**
      * Function to register listeners
@@ -155,7 +215,9 @@ public class ProductsFragment extends Fragment {
                             itemsData = gson.fromJson(result, Items[].class);
                             // convert array to arrayList
                            itemsList = new ArrayList<>(Arrays.asList(itemsData));
+
                             // set list to adapter
+                            //mAdapter.setServicesList(itemsList);
                             mAdapter.setServicesList(itemsList);
 
                         } catch (JsonSyntaxException e) {
@@ -166,6 +228,31 @@ public class ProductsFragment extends Fragment {
     }
 
 
+    public void filter(String text) {
+        // clear itemsCopy
+        itemsCopy.clear();
+        // if text is empty
+        if(text.isEmpty()){
+            // clear itemsCopy
+            //itemsList.addAll(itemsCopy);
+        } else{
+            // instantiating results arraylist
+            ArrayList<Items> result = new ArrayList<>();
+            // iterating through items in itemsCopy list
+            for(Items item: itemsList){
+                // if item contains text in it
+                if(item.getItem().toLowerCase().contains(text.toLowerCase())){
+                    // add item to result arrayList
+                    result.add(item);
+                }
+            }
+            // adding result to itemsCopy
+            itemsCopy.addAll(result);
+        }
+        // setting adapter with itemsCopy
+        mAdapter.setServicesList(itemsCopy);
+        mAdapter.notifyDataSetChanged();
+    }
 
 
 
@@ -180,5 +267,7 @@ public class ProductsFragment extends Fragment {
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
+
+
 
 }

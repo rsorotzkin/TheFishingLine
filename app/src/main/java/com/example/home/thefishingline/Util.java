@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 
 /**
@@ -98,6 +99,28 @@ public class Util extends Activity{
 
 // set drawerLockMode to LOCK_MODE_LOCKED_CLOSED
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+
+
+    /**
+     * Function to hide keyboard
+     */
+    public static void hideSoftKeyboard() {
+// get instance of keyboard through InputMethodManager
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                Util.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+// find the currently focused view, so we can get the correct window token from it.
+        View view = Util.getActivity().getCurrentFocus();
+
+// if no view currently has focus, create a new one, so we can grab a window token from it
+        if (view == null) {
+            view = new View(Util.getActivity());
+        }
+
+// hide keyboard
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 
